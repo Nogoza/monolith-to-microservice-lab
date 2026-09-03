@@ -26,6 +26,8 @@ services:
       - DB_PORT=5432
     volumes:
       - staticfiles:/app/staticfiles
+      - mediafiles:/app/media
+      - logfiles:/app/logs
     depends_on:
       db:
         condition: service_healthy
@@ -35,6 +37,7 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - staticfiles:/app/staticfiles:ro
+      - mediafiles:/app/media:ro
     ports:
       - "8000:80"
     depends_on:
@@ -43,3 +46,5 @@ services:
 volumes:
   pgdata:
   staticfiles:
+  mediafiles:
+  logfiles:
