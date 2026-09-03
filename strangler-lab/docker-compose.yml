@@ -12,7 +12,14 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
-
+  redis:
+    image: redis:7-alpine
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
   web:
     build: .
     restart: always
@@ -24,6 +31,7 @@ services:
       - DB_PASSWORD=storefront_pw
       - DB_HOST=db
       - DB_PORT=5432
+      - REDIS_URL=redis://redis:6379/1
     volumes:
       - staticfiles:/app/staticfiles
       - mediafiles:/app/media

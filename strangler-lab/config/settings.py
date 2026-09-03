@@ -91,14 +91,26 @@ LOGOUT_REDIRECT_URL = "catalog:home"
 # Cache-backed sessions, fast and simple - no extra moving parts to run.
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
-
+"""
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
         "LOCATION": "storefront-cache",
     }
 }
+"""
+# --- sessions & cache ---------------------------------------------------
+REDIS_URL = os.environ.get("REDIS_URL", "redis://redis:6379/1")
 
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": REDIS_URL,
+    }
+}
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
 # --- i18n -----------------------------------------------------------
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
