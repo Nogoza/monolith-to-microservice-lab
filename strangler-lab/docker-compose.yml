@@ -16,6 +16,14 @@ services:
   web:
     build: .
     restart: on-failure
+    environment:
+      - SECRET_KEY=django-insecure-8f2k4jz9q!x3m0t7v-storefront-prod-key-do-not-share
+      - DEBUG=True
+      - DB_NAME=storefront
+      - DB_USER=storefront
+      - DB_PASSWORD=storefront_pw
+      - DB_HOST=db
+      - DB_PORT=5432
     volumes:
       - staticfiles:/app/staticfiles
     depends_on:

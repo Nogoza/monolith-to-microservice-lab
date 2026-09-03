@@ -3,15 +3,19 @@ Django settings for the storefront project.
 """
 
 from pathlib import Path
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # --- core -------------------------------------------------------------
-SECRET_KEY = "django-insecure-8f2k4jz9q!x3m0t7v-storefront-prod-key-do-not-share"
+SECRET_KEY = os.environ.get(
+    "SECRET_KEY",
+    "django-insecure-8f2k4jz9q!x3m0t7v-storefront-prod-key-do-not-share"
+)
 
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "True").lower() in ("true", "1", "yes")
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -63,11 +67,11 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "storefront",
-        "USER": "storefront",
-        "PASSWORD": "storefront_pw",
-        "HOST": "db",
-        "PORT": "5432",
+        "NAME": os.environ.get("DB_NAME", "storefront"),
+        "USER": os.environ.get("DB_USER", "storefront"),
+        "PASSWORD": os.environ.get("DB_PASSWORD", "storefront_pw"),
+        "HOST": os.environ.get("DB_HOST", "db"),
+        "PORT": os.environ.get("DB_PORT", "5432"),
     }
 }
 
