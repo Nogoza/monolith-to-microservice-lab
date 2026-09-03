@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }}{% endblock %}
+{% block content %}
+    <a href="{% url 'catalog:product_list' %}">&laquo; back to shop</a>
+    <h1>{{ product.name }}</h1>
+    {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 320px;">
+    {% endif %}
+    <p>{{ product.description }}</p>
+    <p><strong>${{ product.price }}</strong></p>
+    <p>{{ product.available_stock }} in stock</p>
+
+    <form action="{% url 'cart:add' product.id %}" method="post" class="stacked">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.path }}">
+        <label for="quantity">Quantity</label>
+        <input type="number" id="quantity" name="quantity" value="1" min="1" max="{{ product.available_stock }}">
+        <button class="btn" type="submit">Add to cart</button>
+    </form>
+
+    <h2>Related products</h2>
+    <div class="product-grid">
+        {% for item in related %}
+            <div class="product-card">
+                <h3><a href="{% url 'catalog:product_detail' item.slug %}">{{ item.name }}</a></h3>
+                <p>${{ item.price }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

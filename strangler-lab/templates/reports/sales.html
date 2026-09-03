@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Sales report{% endblock %}
+{% block content %}
+    <h1>Sales report</h1>
+    <img src="data:image/png;base64,{{ report.chart_base64 }}" alt="Sales chart" style="max-width: 100%;">
+
+    <h2>Top categories</h2>
+    <table>
+        <thead><tr><th>Category</th><th>Total revenue</th></tr></thead>
+        <tbody>
+            {% for name, revenue in report.top_categories %}
+                <tr><td>{{ name }}</td><td>${{ revenue }}</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Monthly totals</h2>
+    <table>
+        <thead><tr><th>Month</th><th>Orders</th><th>Revenue</th></tr></thead>
+        <tbody>
+            {% for row in report.monthly_rows %}
+                <tr>
+                    <td>{{ row.month }}</td>
+                    <td>{{ row.orders }}</td>
+                    <td>${{ row.revenue }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

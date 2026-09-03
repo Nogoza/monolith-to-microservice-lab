@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.pyo
+.Python
+env/
+venv/
+.venv/
+*.egg-info/
+staticfiles/
+media/
+logs/
+db.sqlite3
+.DS_Store
+*.log
+
+FACILITATOR-PRIVATE.md

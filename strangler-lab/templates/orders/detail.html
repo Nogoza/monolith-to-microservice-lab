@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Order #{{ order.id }}{% endblock %}
+{% block content %}
+    <h1>Order #{{ order.id }}</h1>
+    <p>Status: {{ order.get_status_display }}</p>
+    <p>Placed: {{ order.created_at }}</p>
+    <p>Shipping to: {{ order.shipping_address }}</p>
+
+    <table>
+        <thead><tr><th>Product</th><th>Quantity</th><th>Unit price</th><th>Subtotal</th></tr></thead>
+        <tbody>
+            {% for item in order.items.all %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>${{ item.unit_price }}</td>
+                    <td>${{ item.subtotal }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h2>Total: ${{ order.total }}</h2>
+
+    {% if order.payment %}
+        <p>Payment {{ order.payment.status }} via {{ order.payment.get_method_display }} ({{ order.payment.transaction_ref }})</p>
+    {% endif %}
+{% endblock %}

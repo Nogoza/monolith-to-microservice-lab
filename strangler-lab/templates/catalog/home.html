@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Storefront - Home{% endblock %}
+{% block content %}
+    <h1>Welcome to the store</h1>
+
+    <h2>Categories</h2>
+    <ul>
+        {% for category in categories %}
+            <li><a href="{% url 'catalog:product_list' %}?category={{ category.slug }}">{{ category.name }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <h2>Featured products</h2>
+    <div class="product-grid">
+        {% for product in featured %}
+            <div class="product-card">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% endif %}
+                <h3><a href="{% url 'catalog:product_detail' product.slug %}">{{ product.name }}</a></h3>
+                <p>${{ product.price }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

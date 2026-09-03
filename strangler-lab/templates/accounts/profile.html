@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Your profile{% endblock %}
+{% block content %}
+    <h1>Your profile</h1>
+    <form method="post" class="stacked">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn" type="submit">Save</button>
+    </form>
+
+    <h2>Recent orders</h2>
+    <table>
+        <thead><tr><th>Order</th><th>Status</th><th>Total</th></tr></thead>
+        <tbody>
+            {% for order in recent_orders %}
+                <tr>
+                    <td><a href="{% url 'orders:detail' order.id %}">#{{ order.id }}</a></td>
+                    <td>{{ order.get_status_display }}</td>
+                    <td>${{ order.total }}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="3">No orders yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
