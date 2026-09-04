@@ -45,14 +45,14 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      redis:
+        condition: service_healthy
 
   nginx:
-    image: nginx:1.25-alpine
+    build: ./nginx
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - staticfiles:/app/staticfiles:ro
       - mediafiles:/app/media:ro
-      - logfiles:/app/logs:ro
     ports:
       - "8000:80"
     depends_on:
