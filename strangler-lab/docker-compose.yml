@@ -48,6 +48,33 @@ services:
       redis:
         condition: service_healthy
 
+  web-reports:
+    build: .
+    restart: always
+    environment:
+      - SECRET_KEY=django-insecure-8f2k4jz9q!x3m0t7v-storefront-prod-key-do-not-share
+      - DEBUG=True
+      - DB_NAME=storefront
+      - DB_USER=storefront
+      - DB_PASSWORD=storefront_pw
+      - DB_HOST=db
+      - DB_PORT=5432
+      - REDIS_URL=redis://redis:6379/1
+    volumes:
+      - staticfiles:/app/staticfiles
+      - mediafiles:/app/media
+      - logfiles:/app/logs
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/')\" || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
   nginx:
     build: ./nginx
     volumes:
@@ -57,6 +84,8 @@ services:
       - "8000:80"
     depends_on:
       web:
+        condition: service_healthy
+      web-reports:
         condition: service_healthy
 
 volumes:
